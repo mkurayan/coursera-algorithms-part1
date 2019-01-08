@@ -2,9 +2,8 @@ import edu.princeton.cs.algs4.Bag;
 
 import java.util.Arrays;
 
-
 public class BruteCollinearPoints {
-    private LineSegment[] lineSegments;
+    private final LineSegment[] lineSegments;
 
     public BruteCollinearPoints(Point[] points) {
         if (points == null) {
@@ -17,26 +16,35 @@ public class BruteCollinearPoints {
             }
         }
 
-        Arrays.sort(points);
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                if (points[i].compareTo(points[j]) == 0) {
+                    throw new IllegalArgumentException("Array contains a repeated point");
+                }
+            }
+        }
 
-        for (int i = 0; i < points.length - 1; i++) {
-            if (points[i].compareTo(points[i + 1]) == 0) {
+        Point[] ps = points.clone();
+
+        Arrays.sort(ps);
+
+        for (int i = 0; i < ps.length - 1; i++) {
+            if (ps[i].compareTo(ps[i + 1]) == 0) {
                 // Array contains a repeated point.
                 throw new IllegalArgumentException();
             }
         }
 
         Bag<LineSegment> bag = new Bag<>();
-        for (int i = 0; i < points.length; i++) {
-            for (int j = i + 1; j < points.length; j++) {
-                for (int k = j + 1; k < points.length; k++) {
-                    for (int m = k + 1; m < points.length; m++) {
+        for (int i = 0; i < ps.length; i++) {
+            for (int j = i + 1; j < ps.length; j++) {
+                for (int k = j + 1; k < ps.length; k++) {
+                    for (int m = k + 1; m < ps.length; m++) {
 
-                        Point p = points[i];
-                        double slope = p.slopeTo(points[j]);
-                        if (p.slopeTo(points[k]) == slope
-                                && p.slopeTo(points[m]) == slope) {
-                            bag.add(new LineSegment(p, points[m]));
+                        Point p = ps[i];
+                        double slope = p.slopeTo(ps[j]);
+                        if (p.slopeTo(ps[k]) == slope && p.slopeTo(ps[m]) == slope) {
+                            bag.add(new LineSegment(p, ps[m]));
                         }
                     }
                 }
@@ -56,6 +64,6 @@ public class BruteCollinearPoints {
     }
 
     public LineSegment[] segments() {
-        return lineSegments;
+        return lineSegments.clone();
     }
 }

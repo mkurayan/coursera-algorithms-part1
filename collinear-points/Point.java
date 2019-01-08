@@ -9,11 +9,9 @@
  ******************************************************************************/
 
 import edu.princeton.cs.algs4.StdDraw;
-
 import java.util.Comparator;
 
 public class Point implements Comparable<Point> {
-
     private final int x;     // x-coordinate of this point
     private final int y;     // y-coordinate of this point
 
@@ -60,19 +58,19 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        if(this.compareTo(that) == 0) {
+        if (this.compareTo(that) == 0) {
             return Double.NEGATIVE_INFINITY;
         }
 
-        if(this.x == that.x) {
+        if (this.x == that.x) {
             return Double.POSITIVE_INFINITY;
         }
 
-        if(this.y == that.y) {
+        if (this.y == that.y) {
             return 0.0;
         }
 
-        return ((double)(that.y - this.y)) / (that.x - this.x);
+        return ((double) (that.y - this.y)) / (that.x - this.x);
     }
 
     /**
@@ -88,13 +86,13 @@ public class Point implements Comparable<Point> {
      *         argument point
      */
     public int compareTo(Point that) {
-        int yCompareResult = compareTo(this.y, that.y);
+        int yCompareResult = cmpTo(this.y, that.y);
 
-        return yCompareResult == 0 ? compareTo(this.x, that.x) : yCompareResult;
+        return yCompareResult == 0 ? cmpTo(this.x, that.x) : yCompareResult;
     }
 
-    private static int compareTo(int a, int b) {
-        if(a > b) {
+    private int cmpTo(int a, int b) {
+        if (a > b) {
             return 1;
         } else if (a < b) {
             return -1;
@@ -130,7 +128,7 @@ public class Point implements Comparable<Point> {
             double aSlope = Point.this.slopeTo(a);
             double bSlope =  Point.this.slopeTo(b);
 
-            if(aSlope > bSlope) {
+            if (aSlope > bSlope) {
                 return 1;
             } else if (aSlope < bSlope) {
                 return -1;

@@ -4,8 +4,9 @@ import edu.princeton.cs.algs4.MergeX;
 import java.util.Arrays;
 
 public class FastCollinearPoints {
-    private LineSegment[] lineSegments;
     private static final int P_COUNT = 3;
+
+    private final LineSegment[] lineSegments;
 
     public FastCollinearPoints(Point[] points) {
         if (points == null) {
@@ -18,20 +19,30 @@ public class FastCollinearPoints {
             }
         }
 
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < points.length; j++) {
+                if (points[i].compareTo(points[j]) == 0) {
+                    throw new IllegalArgumentException("Array contains a repeated point");
+                }
+            }
+        }
+
+        Point[] ps = points.clone();
+
         Bag<LineSegment> bag = new Bag<>();
 
         // Sort points in natural order.
-        Arrays.sort(points);
+        Arrays.sort(ps);
 
-        for (int i = 0; i < points.length; i++) {
+        for (int i = 0; i < ps.length; i++) {
             // Copy points in natural order to sub array,
             // which will be used for sorting by slope.
-            Point[] sPoints =  new Point[points.length];
-            for (int j = 0; j < points.length; j++) {
-                sPoints[j] = points[j];
+            Point[] sPoints =  new Point[ps.length];
+            for (int j = 0; j < ps.length; j++) {
+                sPoints[j] = ps[j];
             }
 
-            Point p = points[i];
+            Point p = ps[i];
 
             MergeX.sort(sPoints, p.slopeOrder());
 
@@ -52,8 +63,7 @@ public class FastCollinearPoints {
                 }
             }
 
-            if (n >= P_COUNT && p.compareTo(sPoints[sPoints.length - n]) < 0
-                    ) {
+            if (n >= P_COUNT && p.compareTo(sPoints[sPoints.length - n]) < 0) {
                 bag.add(new LineSegment(p, sPoints[sPoints.length - 1]));
             }
         }
@@ -72,6 +82,6 @@ public class FastCollinearPoints {
     }
 
     public LineSegment[] segments() {
-        return lineSegments;
+        return lineSegments.clone();
     }
 }
